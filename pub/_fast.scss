@@ -1,4 +1,4 @@
-#gallery.fast {
+.gallery {
   img {
     display: block;
     height: 100vh;
@@ -6,4 +6,17 @@
     position: absolute;
     border-bottom: 2px solid #fff;
   }
+}
+
+#gallery_true {
+  z-index: 1
+}
+
+#gallery_false {
+  z-index: 2;
+
+}
+
+.no-opacity{
+  opacity: 0;
 }

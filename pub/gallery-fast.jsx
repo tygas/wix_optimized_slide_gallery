@@ -2,11 +2,16 @@ const galleryComp = React.createClass({
 	getInitialState: function () {
 		return {
 			images: this.props.images,
-			currentImage: 0
+			currentImage: 0,
+			//bonusClass: this.props.isThumb ? "no-opacity" : ""
 		};
 	},
 	componentDidMount: function () {
 		window.addEventListener('scroll', this.handleScroll);
+		return;
+		this.setState({
+			bonusClass: ""
+		})
 	},
 
 	componentWillUnmount: function () {
@@ -17,7 +22,7 @@ const galleryComp = React.createClass({
 		var currentYPosition = window.scrollY;
 		var imageSize = window.innerHeight;
 
-		const startingIndex = Math.floor(currentYPosition / imageSize - 3)
+		const startingIndex = Math.floor(currentYPosition / imageSize - Math.floor(this.props.imageCount / 2))
 
 
 		this.setState({
@@ -32,12 +37,13 @@ const galleryComp = React.createClass({
 	},
 
 	renderImages(initialImage){
+
 		var renderedImages = [];
-		for (var currentImgIndex = initialImage; (currentImgIndex < initialImage + 7) && (currentImgIndex < this.props.images.length)
+		for (var currentImgIndex = initialImage; (currentImgIndex < initialImage + this.props.imageCount) && (currentImgIndex < this.props.images.length)
 		&& this.props.images[currentImgIndex].low_resolution; currentImgIndex++) {
 			renderedImages.push(<img key={currentImgIndex}
 			                         style={this.translateImageStyle(currentImgIndex)}
-			                         src={this.props.images[currentImgIndex].low_resolution.url}/>);
+			                         src={this.props.images[currentImgIndex][this.props.isThumb?'thumbnail':'low_resolution'].url}/>);
 		}
 		return renderedImages;
 	},
@@ -49,7 +55,7 @@ const galleryComp = React.createClass({
 
 	render() {
 		return (
-			<div id="gallery" className="fast" style={this.setGaleryHeight()}>
+			<div id={"gallery_" + this.props.isThumb} className="gallery fast" style={this.setGaleryHeight()}>
 				{this.renderImages(this.state.currentImage)}
 			</div>
 		)
